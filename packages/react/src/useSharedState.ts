@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 import { SharedServiceClient  } from '@shared-service/core';
 
-let shareService: SharedServiceClient;
+let sharedService: SharedServiceClient;
 
-export function initShareService(worker: SharedWorker) {
-  shareService = new SharedServiceClient({ worker });
+export function initSharedService(worker: SharedWorker) {
+  sharedService = new SharedServiceClient({ worker });
 }
 
-export function useSharedService<T>(key: string, initialData: T) {
+export function useSharedState<T>(key: string, initialData: T) {
   const [data, setState] = useState(initialData);
 
   useEffect(() => {
-    if (!shareService) {
+    if (!sharedService) {
       throw new Error('Share service is not initialized.');
     }
-    shareService.getState(key).then(lastData => {
+    sharedService.getState(key).then(lastData => {
       if (lastData) {
         setState(lastData as T);
       }
@@ -24,14 +24,14 @@ export function useSharedService<T>(key: string, initialData: T) {
     const onStateChange = (data) => {
       setState(data);
     }
-    shareService.on(key, onStateChange);
+    sharedService.on(key, onStateChange);
     return () => {
-      shareService.off(key, onStateChange);
+      sharedService.off(key, onStateChange);
     };
   }, []);
 
   const setData = (newData) => {
-    return shareService.setState(key, newData);
+    return sharedService.setState(key, newData);
   }
   return [data, setData];
 }

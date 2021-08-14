@@ -9,7 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useSharedService } from '@shared-service/react';
+import { useSharedState } from '@shared-service/react';
 
 import TaskItem from './TaskItem';
 
@@ -43,8 +43,8 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App() {
-  const [tasks, setTasks] = useSharedService('tasks', []);
-  const [todoInput, setTodoInput] = useSharedService('taskInput', '');
+  const [tasks, setTasks] = useSharedState('tasks', []);
+  const [todoInput, setTodoInput] = useSharedState('taskInput', '');
   const [tab, setTab] = useState(0);
   const classes = useStyles();
 

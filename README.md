@@ -19,12 +19,12 @@ In `React` app root endpoint:
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { initShareService } from '@shared-service/react';
+import { initSharedService } from '@shared-service/react';
 
 import App from './App';
 
 const worker = new SharedWorker('./worker.js', { type: 'module' });
-initShareService(worker);
+initSharedService(worker);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -54,10 +54,10 @@ In React component:
 
 ```js
 import React from 'react';
-import { useSharedService } from '@shared-service/react';
+import { useSharedState } from '@shared-service/react';
 
 export default function App() {
-  const [count, setCount] = useSharedService('count', 0);
+  const [count, setCount] = useSharedState('count', 0);
   return (
     <div className="App">
       <div className="Counter">

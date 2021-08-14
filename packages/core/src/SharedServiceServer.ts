@@ -1,19 +1,21 @@
+import { EventEmitter } from 'events';
+
 import { MessageRequest, TransportInterface } from './interfaces';
 
-export class SharedServiceServer {
+export class SharedServiceServer extends EventEmitter {
   protected _transports: TransportInterface[] = [];
   protected _state: any;
 
   constructor(initState) {
+    super();
     this._state = initState || {};
   }
 
-  _handleRequest(portTransport: TransportInterface, request: MessageRequest) {
-    console.log(request);
+  _handleRequest(transport: TransportInterface, request: MessageRequest) {
     const payload = request.payload;
     if (payload.action === 'getState') {
-      const state = this._state[payload.key];
-      portTransport.response({
+      const state = this.getState(payload.key);
+      transport.response({
         requestId: request.requestId,
         result: state,
         error: null,
@@ -21,23 +23,34 @@ export class SharedServiceServer {
       return;
     }
     if (payload.action === 'setState') {
-      this._state[payload.key] = payload.state;
-      console.log(this._state);
-      portTransport.response({
+      this.setState(payload.key, payload.state);
+      transport.response({
         requestId: request.requestId,
         result: 'ok',
         error: null,
       });
-      this._transports.forEach((transport) => {
-        transport.push({
-          payload: {
-            action: 'setState',
-            key: payload.key,
-            state: payload.state,
-          },
-        });
-      });
       return;
     }
+  }
+
+  getState(key) {
+    return this._state[key];
+  }
+
+  setState(key, state) {
+    if (typeof key !== 'string') {
+      return;
+    }
+    this._state[key] = state;
+    this._transports.forEach((transport) => {
+      transport.push({
+        payload: {
+          action: 'setState',
+          key,
+          state,
+        },
+      });
+    });
+    this.emit('stateChange', { key, state });
   }
 }

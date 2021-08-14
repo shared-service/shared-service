@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { initShareService } from '@shared-service/react';
+import { initSharedService } from '@shared-service/react';
 
 import App from './App';
 
 const worker = new SharedWorker('./worker.js', { type: 'module' });
-initShareService(worker);
+initSharedService(worker);
 
 ReactDOM.render(
   <React.StrictMode>
