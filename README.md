@@ -76,6 +76,6 @@ export default function App() {
 
 ## Demo project
 
-A TODO demo project [here](packages/demo):
+A TODO demo project [here](https://github.com/shared-service/shared-service/tree/main/packages/demo):
 
 [Online demo](https://shared-service.github.io/todo-demo/)

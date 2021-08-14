@@ -1,7 +1,7 @@
 import { SharedServiceWorker } from '@shared-service/core';
 import localforage from 'localforage';
 
-console.log('worker');
+console.log('TODO demo with SharedService');
 
 const sharedService = new SharedServiceWorker({
   tasks: [
@@ -22,10 +22,8 @@ async function initStorage() {
   });
   await storage.ready();
   const keys = await storage.keys();
-  console.log(keys);
   const promises = keys.map((key) =>
     storage.getItem(key).then((data) => {
-      console.log(key, data);
       sharedService.setState(key, data);
     }),
   );

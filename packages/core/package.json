@@ -1,11 +1,17 @@
 {
   "name": "@shared-service/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "author": "Embbnux Ji",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shared-service/shared-service.git"
+  },
+  "homepage": "https://github.com/shared-service/shared-service#readme",
   "scripts": {
+    "prepublish": "tsc && webpack",
     "tsc": "tsc",
     "build": "webpack",
     "watch": "webpack --watch"
