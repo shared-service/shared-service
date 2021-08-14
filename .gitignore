@@ -1,6 +1,8 @@
 node_modules
 packages/core/lib
 packages/core/build
+packages/core/README.md
 packages/react/lib
 packages/react/build
+packages/react/README.md
 .DS_Store
