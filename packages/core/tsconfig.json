@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "lib",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "files": [
+    "src/index.ts",
+    "src/SharedServiceClient.ts",
+    "src/SharedServiceServer.ts",
+    "src/SharedServiceWorker.ts",
+    "src/eventTypes.ts",
+    "src/Transport.ts",
+    "src/interfaces.ts"
+  ],
+  "compileOnSave": true
+}

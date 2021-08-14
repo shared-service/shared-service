@@ -1,0 +1,6 @@
+node_modules
+packages/core/lib
+packages/core/build
+packages/react/lib
+packages/react/build
+.DS_Store

@@ -1,0 +1,26 @@
+{
+    "name": "@shared-service/react",
+    "version": "0.0.1",
+    "main": "lib/index.js",
+    "author": "Embbnux Ji",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+      "tsc": "tsc",
+      "build": "webpack",
+      "watch": "webpack --watch"
+    },
+    "peerDependencies": {
+      "@shared-service/core": "^0.0.1",
+      "react": ">=16.8.0"
+    },
+    "devDependencies": {
+      "@shared-service/core": "*",
+      "react": "^16.8.0",
+      "ts-loader": "^9.2.3",
+      "tslint": "^6.1.3",
+      "typescript": "^4.3.2",
+      "webpack": "^5.38.1",
+      "webpack-cli": "^4.7.2"
+    }
+  }
