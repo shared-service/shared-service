@@ -73,3 +73,9 @@ export default function App() {
   );
 }
 ```
+
+## Demo project
+
+A TODO demo project [here](packages/demo):
+
+[Online demo](https://shared-service.github.io/todo-demo/)
