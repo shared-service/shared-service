@@ -11,7 +11,7 @@
   },
   "homepage": "https://github.com/shared-service/shared-service#readme",
   "scripts": {
-    "prepublish": "tsc && webpack",
+    "prepublish": "tsc && webpack && cp ../../README.md ./README.md",
     "tsc": "tsc",
     "build": "webpack",
     "watch": "webpack --watch"

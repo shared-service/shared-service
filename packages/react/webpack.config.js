@@ -9,6 +9,9 @@ module.exports = {
     library: 'SharedService',
     libraryTarget: 'umd',
   },
+  externals: {
+    'react': 'react',
+  },
   resolve: {
     extensions: ['.ts', '.js']
   },
