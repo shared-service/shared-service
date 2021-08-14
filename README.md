@@ -1,6 +1,6 @@
 # SharedService
 
-SharedService is a Javascript library for build multiple tabs app.
+SharedService is a Javascript library for building multiple tabs app.
 
 * Use `SharedWorker` to share UI state between tabs.
 * Make all data and services in `SharedWorker`.
