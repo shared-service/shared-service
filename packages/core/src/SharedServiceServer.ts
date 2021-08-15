@@ -1,9 +1,9 @@
 import { EventEmitter } from 'events';
-
-import { MessageRequest, TransportInterface } from './interfaces';
+import { ClientPort } from './ClientPort';
+import { actionTypes } from './actionTypes';
 
 export class SharedServiceServer extends EventEmitter {
-  protected _transports: TransportInterface[] = [];
+  protected _ports: ClientPort[] = [];
   protected _state: any;
 
   constructor(initState) {
@@ -11,26 +11,24 @@ export class SharedServiceServer extends EventEmitter {
     this._state = initState || {};
   }
 
-  _handleRequest(transport: TransportInterface, request: MessageRequest) {
-    const payload = request.payload;
-    if (payload.action === 'getState') {
-      const state = this.getState(payload.key);
-      transport.response({
-        requestId: request.requestId,
-        result: state,
-        error: null,
-      });
-      return;
-    }
-    if (payload.action === 'setState') {
-      this.setState(payload.key, payload.state);
-      transport.response({
-        requestId: request.requestId,
-        result: 'ok',
-        error: null,
-      });
-      return;
-    }
+  onNewPort(rawPort: MessagePort) {
+    const port = new ClientPort(rawPort);
+    this._ports.push(port);
+    port.on(actionTypes.close, () => {
+      this._ports = this._ports.filter(p => p !== port);
+      port.removeAllListeners();
+      port.dispose();
+    });
+
+    port.on(actionTypes.getState, ({ key, requestId }) => {
+      const state = this.getState(key);
+      port.response({ requestId, result: state, error: null });
+    });
+
+    port.on(actionTypes.setState, ({ key, state, requestId }) => {
+      this.setState(key, state);
+      port.response({ requestId, result: 'ok', error: null });
+    });
   }
 
   getState(key) {
@@ -42,14 +40,8 @@ export class SharedServiceServer extends EventEmitter {
       return;
     }
     this._state[key] = state;
-    this._transports.forEach((transport) => {
-      transport.push({
-        payload: {
-          action: 'setState',
-          key,
-          state,
-        },
-      });
+    this._ports.forEach((port) => {
+      port.pushState(key, state);
     });
     this.emit('stateChange', { key, state });
   }

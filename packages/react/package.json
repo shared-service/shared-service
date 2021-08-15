@@ -1,6 +1,6 @@
 {
   "name": "@shared-service/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "lib/index.js",
   "author": "Embbnux Ji",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "watch": "webpack --watch"
   },
   "peerDependencies": {
-    "@shared-service/core": "^0.1.0",
+    "@shared-service/core": "^0.1.1",
     "react": ">=16.8.0"
   },
   "devDependencies": {

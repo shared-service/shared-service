@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 
+import { useSharedState } from '@shared-service/react';
+
 const useStyles = makeStyles({
   itemText: {
     paddingRight: '50px',
@@ -22,6 +24,7 @@ const useStyles = makeStyles({
 });
 
 function TaskItem({
+  id,
   name,
   completed,
   handleCompleteChange,
@@ -29,8 +32,8 @@ function TaskItem({
   editTask,
 }) {
   const classes = useStyles();
-  const [editing, setEditing] = useState(false);
-  const [editingName, setEditingName] = useState(name);
+  const [editing, setEditing] = useSharedState(`editing-${id}`, false);
+  const [editingName, setEditingName] = useSharedState(`editingName-${id}`, name);
   const onSave = () => {
     if (!editingName) {
       return;

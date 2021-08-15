@@ -16,6 +16,7 @@
     "src/SharedServiceClient.ts",
     "src/SharedServiceServer.ts",
     "src/SharedServiceWorker.ts",
+    "src/ClientPort.ts",
     "src/eventTypes.ts",
     "src/Transport.ts",
     "src/interfaces.ts"

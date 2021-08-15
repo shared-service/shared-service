@@ -9,11 +9,11 @@ export function initSharedService(worker: SharedWorker) {
 
 export function useSharedState<T>(key: string, initialData: T) {
   const [data, setState] = useState(initialData);
-
+  if (!sharedService) {
+    console.warn('Share service is not initialized.');
+    return [data, setState];
+  }
   useEffect(() => {
-    if (!sharedService) {
-      throw new Error('Share service is not initialized.');
-    }
     sharedService.getState(key).then(lastData => {
       if (lastData) {
         setState(lastData as T);
@@ -24,10 +24,8 @@ export function useSharedState<T>(key: string, initialData: T) {
     const onStateChange = (data) => {
       setState(data);
     }
-    sharedService.on(key, onStateChange);
-    return () => {
-      sharedService.off(key, onStateChange);
-    };
+    const unsubscribe = sharedService.subscribe(key, onStateChange);
+    return unsubscribe;
   }, []);
 
   const setData = (newData) => {

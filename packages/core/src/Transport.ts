@@ -22,6 +22,7 @@ export class Transport extends EventEmitter implements TransportInterface {
 
   _onMessage = (e) => {
     const data  = e.data;
+    // console.log(data);
     if (data.type === this.events.request) {
       this.emit(this.events.request, { requestId: data.requestId, payload: data.payload });
       return;

@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { Transport } from './Transport';
-
+import { actionTypes } from './actionTypes';
 export class SharedServiceClient extends EventEmitter {
   protected _worker: SharedWorker;
   protected _transport: Transport;
@@ -11,17 +11,37 @@ export class SharedServiceClient extends EventEmitter {
     this._worker = worker;
     this._transport = new Transport({ port: worker.port });
     this._transport.on(this._transport.events.push, (message) => {
-      if (message.action === 'setState') {
+      if (message.action === actionTypes.setState) {
         this.emit(message.key, message.state);
       }
     });
     worker.port.start();
+    window.addEventListener('unload', () => {
+      this._transport.push({
+        payload: {
+          action: actionTypes.close,
+        }
+      });
+    });
+  }
+
+  subscribe<T>(key: string, func: (data: T) => void): () => void {
+    this.on(key, func);
+    return () => {
+      this.off(key, func);
+      this._transport.push({
+        payload: {
+          action: actionTypes.unsubscribe,
+          key,
+        }
+      });
+    };
   }
 
   async setState(key, state) {
     await this._transport.request({
       payload: {
-        action: 'setState',
+        action: actionTypes.setState,
         key,
         state,
       }
@@ -31,7 +51,7 @@ export class SharedServiceClient extends EventEmitter {
   async getState(key) {
     const state = await this._transport.request({
       payload: {
-        action: 'getState',
+        action: actionTypes.getState,
         key,
       }
     });

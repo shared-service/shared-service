@@ -93,6 +93,7 @@ function App() {
     .map(task => (
       <TaskItem
         key={task.id}
+        id={task.id}
         name={task.name}
         completed={task.completed}
         handleCompleteChange={(event) => {
