@@ -18,7 +18,7 @@ jobs:
       - run: yarn
       - run: yarn workspace @shared-service/demo build
       - name: Github Pages
-        uses: JamesIves/github-pages-deploy-action@@4.1.4
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           ssh-key: ${{ secrets.DEMO_PAGE_DEMO_KEY }}
           branch: main
