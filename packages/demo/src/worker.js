@@ -15,8 +15,8 @@ const sharedService = new SharedServiceWorker({
 // eslint-disable-next-line no-restricted-globals
 self.sharedService = sharedService;
 
-/*global onconnect*/
-onconnect = function(e) {
+// eslint-disable-next-line no-restricted-globals
+self.onconnect = function(e) {
   sharedService.onConnect(e);
 };
 
