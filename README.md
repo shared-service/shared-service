@@ -1,5 +1,9 @@
 # SharedService
 
+[![Build Status](https://github.com/shared-service/shared-service/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/shared-service/shared-service/actions)
+[![NPM Version](https://img.shields.io/npm/v/@shared-service/core.svg?style=flat-square)](https://www.npmjs.com/package/@shared-service/core)
+[![NPM Version](https://img.shields.io/npm/v/@shared-service/react.svg?style=flat-square)](https://www.npmjs.com/package/@shared-service/react)
+
 SharedService is a Javascript library for building multiple tabs app.
 
 * Use `SharedWorker` to share UI state between tabs.
