@@ -2,9 +2,17 @@ import { useState, useEffect } from 'react';
 import { SharedServiceClient  } from '@shared-service/core';
 
 let sharedService: SharedServiceClient;
+let environment;
+if (typeof window !== 'undefined') {
+  environment = window;
+}
+if (typeof global !== 'undefined') {
+  environment = global.window || global;
+}
 
 export function initSharedService(worker: SharedWorker) {
   sharedService = new SharedServiceClient({ worker });
+  environment.$sharedService = sharedService;
 }
 
 export function useSharedState<T>(key: string, initialData: T) {

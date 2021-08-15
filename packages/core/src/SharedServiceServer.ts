@@ -2,8 +2,10 @@ import { EventEmitter } from 'events';
 import { ClientPort } from './ClientPort';
 import { actionTypes } from './actionTypes';
 
+import { ExecutorsMap } from './interfaces';
 export class SharedServiceServer extends EventEmitter {
   protected _ports: ClientPort[] = [];
+  protected _executors: ExecutorsMap = {};
   protected _state: any;
 
   constructor(initState) {
@@ -29,6 +31,22 @@ export class SharedServiceServer extends EventEmitter {
       this.setState(key, state);
       port.response({ requestId, result: 'ok', error: null });
     });
+
+    port.on(actionTypes.execute, async ({ funcName, args, requestId }) => {
+      const executor = this._executors[funcName];
+      if (!executor) {
+        port.response({ requestId, result: null, error: 'Function not found' });
+        return;
+      }
+      let result;
+      let error: string;
+      try {
+        result = await executor(...args);
+      } catch (e) {
+        error = e.message;
+      }
+      port.response({ requestId, result, error });
+    });
   }
 
   getState(key) {
@@ -44,5 +62,25 @@ export class SharedServiceServer extends EventEmitter {
       port.pushState(key, state);
     });
     this.emit('stateChange', { key, state });
+  }
+
+  registerExecutor(funcName, func) {
+    if (this._executors[funcName]) {
+      throw new Error(`${funcName} is registered.`);
+    }
+    this._executors[funcName] = func;
+  }
+
+  unregisterExecutor(funcName) {
+    delete this._executors[funcName];
+  }
+
+  dispose() {
+    this._executors = {};
+    this._ports.forEach((port) => {
+      port.removeAllListeners();
+      port.dispose();
+    });
+    this._ports = [];
   }
 }

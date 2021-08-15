@@ -42,8 +42,10 @@ const FILTER_MAP = {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
+/* global $sharedService */
+
 function App() {
-  const [tasks, setTasks] = useSharedState('tasks', []);
+  const [tasks] = useSharedState('tasks', []);
   const [todoInput, setTodoInput] = useSharedState('taskInput', '');
   const [tab, setTab] = useState(0);
   const classes = useStyles();
@@ -53,39 +55,19 @@ function App() {
   };
 
   const addTask = () => {
-    if (!todoInput) {
-      return;
-    }
-    const newTask = { id: Date.now(), name: todoInput, completed: false };
-    setTasks([...tasks, newTask])
-    setTodoInput('');
+    return $sharedService.execute('addTask');
   };
 
   const updateTaskCompleted = (id, completed) => {
-    const updatedTasks = tasks.map(task => {
-      if (id === task.id) {
-        return {...task, completed }
-      }
-      return task;
-    });
-    setTasks(updatedTasks);
+    return $sharedService.execute('updateTaskCompleted', [id, completed]);
   };
 
   const deleteTask = (id) => {
-    const remainingTasks = tasks.filter(task => id !== task.id);
-    setTasks(remainingTasks);
+    return $sharedService.execute('deleteTask', [id]);
   };
 
   const editTask = (id, newName) => {
-    const editedTaskList = tasks.map(task => {
-    // if this task has the same ID as the edited task
-      if (id === task.id) {
-        //
-        return {...task, name: newName}
-      }
-      return task;
-    });
-    setTasks(editedTaskList);
+    return $sharedService.execute('editTask', [id, newName]);
   };
 
   const filterTasks = tasks.filter(FILTER_MAP[FILTER_NAMES[tab]]);

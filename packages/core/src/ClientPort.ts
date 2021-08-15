@@ -1,11 +1,7 @@
 import { EventEmitter } from 'events';
 import { Transport } from './Transport';
-import { MessageRequest } from './interfaces';
+import { MessageRequest, StateKeysMap } from './interfaces';
 import { actionTypes } from './actionTypes';
-
-interface StateKeysMap {
-  [key: string]: boolean;
-}
 
 export class ClientPort extends EventEmitter {
   protected _transport: Transport;
@@ -46,6 +42,13 @@ export class ClientPort extends EventEmitter {
         requestId: request.requestId,
       });
       return;
+    }
+    if (payload.action === actionTypes.execute) {
+      this.emit(actionTypes.execute, {
+        funcName: payload.funcName,
+        args: payload.args,
+        requestId: request.requestId,
+      });
     }
   }
 

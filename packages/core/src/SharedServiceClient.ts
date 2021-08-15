@@ -57,4 +57,14 @@ export class SharedServiceClient extends EventEmitter {
     });
     return state;
   }
+
+  async execute(funcName: string, args?: any[]) {
+    return this._transport.request({
+      payload: {
+        action: actionTypes.execute,
+        funcName,
+        args,
+      }
+    });
+  }
 }

@@ -1,6 +1,6 @@
 export const eventTypes = {
-  request: 'shared/request',
-  response: 'shared/response',
-  push: 'shared/push',
-  timeout: 'shared/timeout',
+  request: 'transport/request',
+  response: 'transport/response',
+  push: 'transport/push',
+  timeout: 'transport/timeout',
 };

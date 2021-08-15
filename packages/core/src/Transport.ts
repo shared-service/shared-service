@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 
 import { eventTypes } from './eventTypes';
 
-import { TransportInterface } from './interfaces';
+import { TransportInterface, MessageRequestPayload } from './interfaces';
 
 export class Transport extends EventEmitter implements TransportInterface {
   private _timeout: number;
@@ -45,7 +45,7 @@ export class Transport extends EventEmitter implements TransportInterface {
     }
   }
 
-  request({ payload } : { payload: any }) {
+  request({ payload } : { payload: MessageRequestPayload }) {
     const requestId = uuid.v4();
     let promise = new Promise((resolve, reject) => {
       this._requests.set(requestId, {
