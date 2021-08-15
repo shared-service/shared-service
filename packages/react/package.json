@@ -14,7 +14,8 @@
     "prepublish": "tsc && webpack && cp ../../README.md ./README.md",
     "tsc": "tsc",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "update-version": "node ./update-version.js"
   },
   "peerDependencies": {
     "@shared-service/core": "^0.1.1",
