@@ -1,6 +1,8 @@
 name: CI Pipeline
 
 on: [push]
+
+jobs:
   build:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
