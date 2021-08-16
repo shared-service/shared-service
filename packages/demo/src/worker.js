@@ -3,7 +3,7 @@ import localforage from 'localforage';
 
 console.log('TODO demo with SharedService');
 
-const sharedService = new SharedServiceWorker({
+const sharedServiceServer = new SharedServiceWorker({
   tasks: [
     { id: 0, name: "Eat", completed: true },
     { id: 1, name: "Sleep", completed: false },
@@ -12,42 +12,42 @@ const sharedService = new SharedServiceWorker({
   taskInput: '',
 });
 // eslint-disable-next-line no-restricted-globals
-self.$sharedService = sharedService;
+self.$sharedServiceServer = sharedServiceServer;
 
 // Connect sharedService with SharedWorker onconnect API
 // eslint-disable-next-line no-restricted-globals
 self.onconnect = function(e) {
-  sharedService.onConnect(e);
+  sharedServiceServer.onConnect(e);
 };
 
 // Register executors
-sharedService.registerExecutor('addTask', () => {
-  const taskInput = sharedService.getState('taskInput');
+sharedServiceServer.registerExecutor('addTask', () => {
+  const taskInput = sharedServiceServer.getState('taskInput');
   if (!taskInput) {
     return;
   }
-  const tasks = sharedService.getState('tasks');
+  const tasks = sharedServiceServer.getState('tasks');
   const newTask = { id: Date.now(), name: taskInput, completed: false };
-  sharedService.setState('tasks', [...tasks, newTask]);
-  sharedService.setState('taskInput', '');
+  sharedServiceServer.setState('tasks', [...tasks, newTask]);
+  sharedServiceServer.setState('taskInput', '');
 });
-sharedService.registerExecutor('updateTaskCompleted', (id, completed) => {
-  const tasks = sharedService.getState('tasks');
+sharedServiceServer.registerExecutor('updateTaskCompleted', (id, completed) => {
+  const tasks = sharedServiceServer.getState('tasks');
   const updatedTasks = tasks.map(task => {
     if (id === task.id) {
       return {...task, completed }
     }
     return task;
   });
-  sharedService.setState('tasks', updatedTasks);
+  sharedServiceServer.setState('tasks', updatedTasks);
 });
-sharedService.registerExecutor('deleteTask', (id) => {
-  const tasks = sharedService.getState('tasks');
+sharedServiceServer.registerExecutor('deleteTask', (id) => {
+  const tasks = sharedServiceServer.getState('tasks');
   const remainingTasks = tasks.filter(task => id !== task.id);
-  sharedService.setState('tasks', remainingTasks);
+  sharedServiceServer.setState('tasks', remainingTasks);
 });
-sharedService.registerExecutor('editTask', (id, newName) => {
-  const tasks = sharedService.getState('tasks');
+sharedServiceServer.registerExecutor('editTask', (id, newName) => {
+  const tasks = sharedServiceServer.getState('tasks');
   const editedTaskList = tasks.map(task => {
     // if this task has the same ID as the edited task
     if (id === task.id) {
@@ -56,7 +56,7 @@ sharedService.registerExecutor('editTask', (id, newName) => {
     }
     return task;
   });
-  sharedService.setState('tasks', editedTaskList);
+  sharedServiceServer.setState('tasks', editedTaskList);
 });
 
 async function initStorage() {
@@ -67,11 +67,11 @@ async function initStorage() {
   const keys = await storage.keys();
   const promises = keys.map((key) =>
     storage.getItem(key).then((data) => {
-      sharedService.setState(key, data);
+      sharedServiceServer.setState(key, data);
     }),
   );
   await Promise.all(promises);
-  sharedService.on('stateChange', ({ key, state }) => {
+  sharedServiceServer.on('stateChange', ({ key, state }) => {
     storage.setItem(key, state);
   });
 }
