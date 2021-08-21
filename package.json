@@ -5,9 +5,9 @@
     "packages/*"
   ],
   "scripts": {
-    "postinstall": "yarn core-tsc && yarn core-react",
+    "postinstall": "yarn core-tsc && yarn react-tsc",
     "core-tsc": "yarn workspace @shared-service/core tsc",
-    "core-react": "yarn workspace @shared-service/react tsc",
+    "react-tsc": "yarn workspace @shared-service/react tsc",
     "demo": "yarn workspace @shared-service/demo start"
   },
   "author": "Embbnux Ji",
