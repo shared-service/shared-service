@@ -169,7 +169,6 @@ initStorage();
 
 ## TODO
 
-- [ ] Make it work at Safari?
 - [ ] Support Vue
 - [ ] Run `ShareService` at browser extension background and normal page
 - [ ] Run `ShareService` at Electron main and render process
