@@ -34,7 +34,7 @@ import { initSharedService } from '@shared-service/react';
 import App from './App';
 
 const worker = new SharedWorker('./worker.js', { type: 'module' });
-initSharedService(worker);
+initSharedService({ port: worker.port });
 
 ReactDOM.render(
   <React.StrictMode>
@@ -47,15 +47,15 @@ ReactDOM.render(
 2. In SharedWorker file `worker.js`:
 
 ```js
-import { SharedServiceWorker } from '@shared-service/core';
+import { SharedServiceServer } from '@shared-service/core';
 
-const sharedServiceServer = new SharedServiceWorker({
+const sharedServiceServer = new SharedServiceServer({
   count: 0,
 });
 
 /*global onconnect*/
 onconnect = function(e) {
-  sharedServiceServer.onConnect(e);
+  sharedServiceServer.onNewPort(e.ports[0]);
 };
 
 ```

@@ -22,7 +22,9 @@ export class ClientPort extends EventEmitter {
     this._transport.on(this._transport.events.request, (request) => {
       this._handleRequest(request);
     });
-    port.start();
+    if (typeof port.start === 'function') {
+      port.start();
+    }
   }
 
   _handleRequest(request: MessageRequest) {

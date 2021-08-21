@@ -10,8 +10,8 @@ if (typeof global !== 'undefined') {
   environment = global.window || global;
 }
 
-export function initSharedService(worker: SharedWorker) {
-  sharedService = new SharedServiceClient({ worker });
+export function initSharedService({ port }: { port: MessagePort }) {
+  sharedService = new SharedServiceClient({ port });
   environment.$sharedService = sharedService;
 }
 

@@ -2,20 +2,22 @@ import { EventEmitter } from 'events';
 import { Transport } from './Transport';
 import { actionTypes } from './actionTypes';
 export class SharedServiceClient extends EventEmitter {
-  protected _worker: SharedWorker;
+  protected _port: MessagePort;
   protected _transport: Transport;
 
-  constructor({ worker }: { worker: SharedWorker }) {
+  constructor({ port }: { port: MessagePort }) {
     super();
 
-    this._worker = worker;
-    this._transport = new Transport({ port: worker.port });
+    this._port = port;
+    this._transport = new Transport({ port });
     this._transport.on(this._transport.events.push, (message) => {
       if (message.action === actionTypes.setState) {
         this.emit(message.key, message.state);
       }
     });
-    worker.port.start();
+    if (typeof port.start === 'function') {
+      port.start();
+    }
     window.addEventListener('unload', () => {
       this._transport.push({
         payload: {
