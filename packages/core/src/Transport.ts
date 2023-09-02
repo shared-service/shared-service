@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { EventEmitter } from 'events';
 
 import { eventTypes } from './eventTypes';
@@ -46,7 +46,7 @@ export class Transport extends EventEmitter implements TransportInterface {
   }
 
   request({ payload } : { payload: MessageRequestPayload }) {
-    const requestId = uuid.v4();
+    const requestId = uuidv4();
     let promise = new Promise((resolve, reject) => {
       this._requests.set(requestId, {
         resolve,
