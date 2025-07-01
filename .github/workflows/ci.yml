@@ -21,6 +21,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           ssh-key: ${{ secrets.DEMO_PAGE_DEMO_KEY }}
-          branch: main
+          branch: gh-pages
           folder: packages/demo/build
           repository-name: shared-service/todo-demo
