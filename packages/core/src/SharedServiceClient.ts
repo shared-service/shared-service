@@ -40,7 +40,7 @@ export class SharedServiceClient extends EventEmitter {
     };
   }
 
-  async setState(key, state) {
+  async setState<T>(key: string, state: T) {
     await this._transport.request({
       payload: {
         action: actionTypes.setState,
@@ -50,14 +50,14 @@ export class SharedServiceClient extends EventEmitter {
     });
   }
 
-  async getState(key) {
+  async getState<T>(key: string): Promise<T> {
     const state = await this._transport.request({
       payload: {
         action: actionTypes.getState,
         key,
       }
     });
-    return state;
+    return state as T;
   }
 
   async execute(funcName: string, args?: any[]) {
