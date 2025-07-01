@@ -36,7 +36,7 @@ export function useSharedState<T>(key: string, initialData: T) {
     return unsubscribe;
   }, []);
 
-  const setData = (newData) => {
+  const setData = (newData: T) => {
     return sharedService.setState(key, newData);
   }
   return [data, setData];
