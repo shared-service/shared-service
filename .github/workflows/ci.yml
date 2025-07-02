@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 20.x
       - run: yarn
-      - run: yarn workspace @shared-service/demo build
+      - run: NODE_OPTIONS=--openssl-legacy-provider yarn workspace @shared-service/demo build
       - name: Github Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
