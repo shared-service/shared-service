@@ -3,14 +3,14 @@ import { ClientPort } from './ClientPort';
 import { actionTypes } from './actionTypes';
 
 import { ExecutorsMap } from './interfaces';
-export class SharedServiceServer extends EventEmitter {
+export class SharedServiceServer<T = any> extends EventEmitter {
   protected _ports: ClientPort[] = [];
   protected _executors: ExecutorsMap = {};
-  protected _state: any;
+  protected _state: T;
 
-  constructor(initState) {
+  constructor(initState: T) {
     super();
-    this._state = initState || {};
+    this._state = initState || {} as T;
   }
 
   onNewPort(rawPort: MessagePort) {
@@ -49,14 +49,11 @@ export class SharedServiceServer extends EventEmitter {
     });
   }
 
-  getState(key) {
+  getState<K extends keyof T>(key: K): T[K] {
     return this._state[key];
   }
 
-  setState(key, state) {
-    if (typeof key !== 'string') {
-      return;
-    }
+  setState<K extends keyof T & string>(key: K, state: T[K]) {
     this._state[key] = state;
     this._ports.forEach((port) => {
       port.pushState(key, state);
@@ -64,14 +61,14 @@ export class SharedServiceServer extends EventEmitter {
     this.emit('stateChange', { key, state });
   }
 
-  registerExecutor(funcName, func) {
+  registerExecutor(funcName: string, func: (...args: any[]) => Promise<any>) {
     if (this._executors[funcName]) {
       throw new Error(`${funcName} is registered.`);
     }
     this._executors[funcName] = func;
   }
 
-  unregisterExecutor(funcName) {
+  unregisterExecutor(funcName: string) {
     delete this._executors[funcName];
   }
 
