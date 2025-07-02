@@ -54,7 +54,7 @@ export class ClientPort extends EventEmitter {
     }
   }
 
-  response({ requestId, result, error }: { requestId: string, result: any, error: Error | null }) {
+  response({ requestId, result, error }: { requestId: string, result: unknown, error: Error | null }) {
     this._transport.response({ requestId, result, error });
   }
 

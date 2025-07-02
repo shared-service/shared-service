@@ -38,12 +38,8 @@ export class SharedServiceServer<T = any> extends EventEmitter {
         port.response({ requestId, result: null, error: new Error('Function not found') });
         return;
       }
+      let result: unknown = undefined;
       let error: Error | null = null;
-      try {
-        result = await executor(...args);
-      } catch (e) {
-        error = e as Error;
-      }
       port.response({ requestId, result, error });
     });
   }

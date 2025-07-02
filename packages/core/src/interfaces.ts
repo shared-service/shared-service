@@ -7,7 +7,7 @@ export interface MessageRequestPayload<T = any> {
   key?: string;
   state?: T;
   funcName?: string;
-  args?: any[];
+  args?: unknown[];
 }
 
 export interface MessageRequest {
@@ -26,5 +26,5 @@ export interface StateKeysMap {
 }
 
 export interface ExecutorsMap {
-  [funcName: string]: (...args: any[]) => Promise<any>;
+  [funcName: string]: (...args: unknown[]) => Promise<unknown>;
 }
