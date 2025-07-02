@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { SharedServiceClient  } from '@shared-service/core';
 
 let sharedService: SharedServiceClient;
-let environment;
+let environment: typeof globalThis;
 if (typeof window !== 'undefined') {
   environment = window;
 }
@@ -36,7 +36,7 @@ export function useSharedState<T>(key: string, initialData: T) {
     return unsubscribe;
   }, []);
 
-  const setData = (newData: T) => {
+  const setData = (newData: T): Promise<void> => {
     return sharedService.setState(key, newData);
   }
   return [data, setData];

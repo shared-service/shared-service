@@ -8,7 +8,7 @@ import { TransportInterface, MessageRequestPayload } from './interfaces';
 export class Transport extends EventEmitter implements TransportInterface {
   private _timeout: number;
   private _port: MessagePort;
-  private _requests: Map<string, any>;
+  private _requests: Map<string, { resolve: (value: unknown) => void; reject: (reason?: any) => void; }>;
   constructor(
     { port, timeout = 15 * 1000 }: { port: MessagePort, timeout?: number }
   ) {
@@ -45,11 +45,11 @@ export class Transport extends EventEmitter implements TransportInterface {
     }
   }
 
-  request({ payload } : { payload: MessageRequestPayload }) {
+  request<T>({ payload }: { payload: MessageRequestPayload<T> }): Promise<T> {
     const requestId = uuid.v4();
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<T>((resolve, reject) => {
       this._requests.set(requestId, {
-        resolve,
+        resolve: resolve as (value: unknown) => void,
         reject,
       });
       this._port.postMessage({
@@ -66,7 +66,7 @@ export class Transport extends EventEmitter implements TransportInterface {
       .then((result) => {
         if (timeout !== undefined && timeout !== null) clearTimeout(timeout);
         this._requests.delete(requestId);
-        return Promise.resolve(result);
+        return Promise.resolve(result as T);
       })
       .catch((error) => {
         if (timeout !== undefined && timeout !== null) clearTimeout(timeout);
@@ -76,7 +76,7 @@ export class Transport extends EventEmitter implements TransportInterface {
     return promise;
   }
 
-  response({ requestId, result, error }) {
+  response({ requestId, result, error }: { requestId: string, result: unknown, error: Error | null }) {
     this._port.postMessage({
       type: this.events.response,
       requestId,
@@ -85,7 +85,7 @@ export class Transport extends EventEmitter implements TransportInterface {
     });
   }
 
-  push({ payload }) {
+  push({ payload }: { payload: MessageRequestPayload }) {
     this._port.postMessage({
       type: this.events.push,
       payload,
