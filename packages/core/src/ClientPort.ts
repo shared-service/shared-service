@@ -54,7 +54,7 @@ export class ClientPort extends EventEmitter {
     }
   }
 
-  response({ requestId, result, error }) {
+  response({ requestId, result, error }: { requestId: string, result: any, error: Error | null }) {
     this._transport.response({ requestId, result, error });
   }
 
@@ -64,7 +64,7 @@ export class ClientPort extends EventEmitter {
     this._transport = null;
   }
 
-  pushState(key: string, state) {
+  pushState<T>(key: string, state: T) {
     if (!this._subscribedStateKeys[key]) {
       return;
     }

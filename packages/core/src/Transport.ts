@@ -45,7 +45,7 @@ export class Transport extends EventEmitter implements TransportInterface {
     }
   }
 
-  request({ payload } : { payload: MessageRequestPayload }) {
+  request<T>({ payload }: { payload: MessageRequestPayload<T> }): Promise<T> {
     const requestId = uuid.v4();
     let promise = new Promise((resolve, reject) => {
       this._requests.set(requestId, {
@@ -76,7 +76,7 @@ export class Transport extends EventEmitter implements TransportInterface {
     return promise;
   }
 
-  response({ requestId, result, error }) {
+  response({ requestId, result, error }: { requestId: string, result: any, error: Error | null }) {
     this._port.postMessage({
       type: this.events.response,
       requestId,
@@ -85,7 +85,7 @@ export class Transport extends EventEmitter implements TransportInterface {
     });
   }
 
-  push({ payload }) {
+  push({ payload }: { payload: MessageRequestPayload }) {
     this._port.postMessage({
       type: this.events.push,
       payload,

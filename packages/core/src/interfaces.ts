@@ -1,7 +1,11 @@
-export interface MessageRequestPayload {
-  action: string;
+import { actionTypes } from "./actionTypes";
+
+export type MessageRequestAction = typeof actionTypes[keyof typeof actionTypes];
+
+export interface MessageRequestPayload<T = any> {
+  action: MessageRequestAction;
   key?: string;
-  state?: any;
+  state?: T;
   funcName?: string;
   args?: any[];
 }
@@ -12,9 +16,9 @@ export interface MessageRequest {
 }
 
 export interface TransportInterface {
-  request({ payload }): Promise<any>;
-  response({ requestId, result, error }): void;
-  push({ payload }): void;
+  request<T = any>({ payload }: { payload: MessageRequestPayload<T> }): Promise<T>;
+  response({ requestId, result, error }: { requestId: string, result: any, error: Error | null }): void;
+  push({ payload }: { payload: MessageRequestPayload }): void;
 }
 
 export interface StateKeysMap {

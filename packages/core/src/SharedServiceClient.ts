@@ -60,8 +60,8 @@ export class SharedServiceClient extends EventEmitter {
     return state as T;
   }
 
-  async execute(funcName: string, args?: any[]) {
-    return this._transport.request({
+  async execute<T = any>(funcName: string, args?: any[]): Promise<T> {
+    return this._transport.request<T>({
       payload: {
         action: actionTypes.execute,
         funcName,

@@ -35,15 +35,14 @@ export class SharedServiceServer<T = any> extends EventEmitter {
     port.on(actionTypes.execute, async ({ funcName, args, requestId }) => {
       const executor = this._executors[funcName];
       if (!executor) {
-        port.response({ requestId, result: null, error: 'Function not found' });
+        port.response({ requestId, result: null, error: new Error('Function not found') });
         return;
       }
-      let result;
-      let error: string;
+      let error: Error | null = null;
       try {
         result = await executor(...args);
       } catch (e) {
-        error = e.message;
+        error = e as Error;
       }
       port.response({ requestId, result, error });
     });
