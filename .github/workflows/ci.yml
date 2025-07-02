@@ -16,7 +16,14 @@ jobs:
         with:
           node-version: 20.x
       - run: yarn
-      - run: NODE_OPTIONS=--openssl-legacy-provider yarn workspace @shared-service/demo build
+      - name: Build Core
+        run: yarn workspace @shared-service/core tsc
+      - name: Build React
+        run: yarn workspace @shared-service/react tsc
+      - name: Build Demo
+        run: NODE_OPTIONS=--openssl-legacy-provider yarn workspace @shared-service/demo build
+      - name: Run Core Tests
+        run: yarn workspace @shared-service/core test
       - name: Github Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
