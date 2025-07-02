@@ -8,7 +8,7 @@
     "postinstall": "yarn core-tsc && yarn react-tsc",
     "core-tsc": "yarn workspace @shared-service/core tsc",
     "react-tsc": "yarn workspace @shared-service/react tsc",
-    "demo": "yarn workspace @shared-service/demo start"
+    "demo": "NODE_OPTIONS=--openssl-legacy-provider yarn workspace @shared-service/demo start"
   },
   "author": "Embbnux Ji",
   "license": "MIT",

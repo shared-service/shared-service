@@ -5,4 +5,5 @@ packages/core/README.md
 packages/react/lib
 packages/react/build
 packages/react/README.md
+coverage
 .DS_Store
