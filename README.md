@@ -4,10 +4,29 @@
 [![NPM Version](https://img.shields.io/npm/v/@shared-service/core.svg?style=flat-square)](https://www.npmjs.com/package/@shared-service/core)
 [![NPM Version](https://img.shields.io/npm/v/@shared-service/react.svg?style=flat-square)](https://www.npmjs.com/package/@shared-service/react)
 
-SharedService is a Javascript library for building multiple tabs app.
 
-* Use `SharedWorker` to share UI state between tabs.
-* Make all data and services in `SharedWorker`.
+SharedService is a JavaScript library for building real-time, multi-tab applications with shared state and services. It leverages `SharedWorker` to synchronize UI state and actions across browser tabs, making it easy to build collaborative or multi-instance web apps.
+
+## Table of Contents
+
+- [Features](#features)
+- [Demo Project](#demo-project)
+- [Installation](#installation)
+- [Get Started](#get-started)
+- [Advanced Usage](#advanced)
+- [Data Persistence](#data-persistence)
+- [TODO & Roadmap](#todo)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support](#support)
+
+## Features
+
+- Share UI state and actions between browser tabs using `SharedWorker`.
+- Centralize all data and services in a single worker for consistency.
+- Simple React integration via hooks and helpers.
+- Extensible for custom actions and data persistence.
+- Demo project and online example included.
 
 ## Demo project
 
@@ -167,8 +186,20 @@ async function initStorage() {
 initStorage();
 ```
 
-## TODO
+## TODO & Roadmap
 
 - [ ] Support Vue
 - [ ] Run `ShareService` at browser extension background and normal page
 - [ ] Run `ShareService` at Electron main and render process
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check [issues](https://github.com/shared-service/shared-service/issues) or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+
+## Support
+
+For questions, feedback, or support, open an issue on GitHub or contact the maintainers.
